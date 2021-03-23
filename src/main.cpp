@@ -88,6 +88,7 @@ int main(int argc, char **argv)
         //   - *Check if any processes need to move from NotStarted to Ready (based on elapsed time), and if so put that process in the ready queue
         for (i = 0; i < processes.size(); i++)
         {
+            std::lock_guard<std::mutex> lock(shared_data->mutex);
             Process *p = processes.at(i);
             if(p->getState() == Process::State::NotStarted) {
                 if(p->getStartTime() <= current_time) {
