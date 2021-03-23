@@ -84,7 +84,18 @@ int main(int argc, char **argv)
 
         // Do the following:
         //   - Get current time
+        uint64_t current_time = currentTime() - start;
         //   - *Check if any processes need to move from NotStarted to Ready (based on elapsed time), and if so put that process in the ready queue
+        for (i = 0; i < processes.size(); i++)
+        {
+            Process *p = processes.at(i);
+            if(p->getState() == Process::State::NotStarted) {
+                if(p->getStartTime() <= current_time) {
+                    p->setState(Process::State::Ready, current_time);
+                    shared_data->ready_queue.push_back(p);
+                }
+            }
+        }
         //   - *Check if any processes have finished their I/O burst, and if so put that process back in the ready queue
         //   - *Check if any running process need to be interrupted (RR time slice expires or newly ready process has higher priority)
         //   - *Sort the ready queue (if needed - based on scheduling algorithm)
