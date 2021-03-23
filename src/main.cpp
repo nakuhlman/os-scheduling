@@ -84,9 +84,24 @@ int main(int argc, char **argv)
 
         // Do the following:
         //   - Get current time
-        //   - *Check if any processes need to move from NotStarted to Ready (based on elapsed time), and if so put that process in the ready queue
-        //   - *Check if any processes have finished their I/O burst, and if so put that process back in the ready queue
-        //   - *Check if any running process need to be interrupted (RR time slice expires or newly ready process has higher priority)
+        uint64_t curTime = currentTime();
+        //   - *Check if any processes need to move from NotStarted to Ready (based on elapsed time) 
+        for(int i = 0; i < processes.size(); i++) {
+            if(processes[i]->getStartTime() >= curTime) {
+                // accessing shared data, lock mutex
+                shared_data->mutex.lock();
+                // if so put that process in the ready queue
+                shared_data->ready_queue.push_back(processes[i]);
+            } else if () {
+                //   - *Check if any processes have finished their I/O burst, and if so put that process back in the ready queue
+
+            } else if () {
+                //   - *Check if any running process need to be interrupted (RR time slice expires or newly ready process has higher priority)
+
+            }
+        }
+        
+        
         //   - *Sort the ready queue (if needed - based on scheduling algorithm)
         //   - Determine if all processes are in the terminated state
         //   - * = accesses shared data (ready queue), so be sure to use proper synchronization

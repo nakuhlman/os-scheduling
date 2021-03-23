@@ -1,0 +1,405 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 4.2.1
+# Built for x86_64-pc-linux-gnu
+# Copyright (C) 1988-2016 Free Software Foundation, Inc.
+# License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+# This is free software: you are free to change and redistribute it.
+# There is NO WARRANTY, to the extent permitted by law.
+
+# Make data base, printed on Tue Mar 23 18:08:02 2021
+
+# Variables
+
+# 'override' directive
+GNUMAKEFLAGS := 
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# environment
+DESKTOP_SESSION = ubuntu
+# default
+.SHELLFLAGS := -c
+# environment
+XDG_SESSION_CLASS = user
+# environment
+SNAP_COMMON = /var/snap/code/common
+# environment
+XDG_SESSION_TYPE = x11
+# environment
+VSCODE_LOG_NATIVE = false
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# environment
+IM_CONFIG_PHASE = 1
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# environment
+XAUTHORITY = /run/user/1000/gdm/Xauthority
+# environment
+GDMSESSION = ubuntu
+# environment
+XMODIFIERS = @im=ibus
+# makefile
+CURDIR := /home/nkuhlman/Desktop/CISC310/Programs/os-scheduling
+# makefile
+SHELL = /bin/sh
+# environment
+SNAP_DATA = /var/snap/code/59
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
+# environment
+JOURNAL_STREAM = 8:36353
+# environment
+XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
+# environment
+SNAP_INSTANCE_NAME = code
+# environment
+SNAP_ARCH = amd64
+# makefile (from 'Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# automatic
+@F = $(notdir $@)
+# environment
+GIO_LAUNCHED_DESKTOP_FILE = /var/lib/snapd/desktop/applications/code_code.desktop
+# environment
+USERNAME = nkuhlman
+# makefile (from 'Makefile', line 2)
+CXXFLAGS = -std=c++11 -D_VARIADIC_MAX=10
+# environment
+XDG_DATA_DIRS = /usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop
+# environment
+DBUS_SESSION_BUS_ADDRESS = unix:path=/run/user/1000/bus
+# environment
+VSCODE_VERBOSE_LOGGING = true
+# environment
+_ = /snap/code/59/usr/share/code/code
+# makefile (from 'Makefile', line 11)
+OBJS = $(addprefix $(OBJDIR)/, main.o configreader.o process.o)
+# environment
+MANAGERPID = 1320
+# environment
+CLUTTER_IM_MODULE = ibus
+# environment
+LESSOPEN = | /usr/bin/lesspipe %s
+# makefile (from 'Makefile', line 15)
+mkdirs := 
+# environment
+GSETTINGS_SCHEMA_DIR = /snap/code/59/usr/share/glib-2.0/schemas
+# default
+MAKE_HOST := x86_64-pc-linux-gnu
+# environment
+PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+# environment
+GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
+# environment
+SESSION_MANAGER = local/CISC310-VM:@/tmp/.ICE-unix/1693,unix/CISC310-VM:/tmp/.ICE-unix/1693
+# environment
+XDG_RUNTIME_DIR = /run/user/1000
+# environment
+GDK_PIXBUF_MODULE_FILE = /home/nkuhlman/snap/code/common/.cache/gdk-pixbuf-loaders.cache
+# environment
+SNAP = /snap/code/59
+# environment
+SNAP_VERSION = 2b9aebd5
+# environment
+XDG_MENU_PREFIX = gnome-
+# environment
+VSCODE_LOG_STACK = false
+# environment
+DISABLE_WAYLAND = 1
+# environment
+VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=010be0dd-024b-47e9-a451-94b07cce4f40&iid=010be0dd-024b-47e9-a451-94b07cce4f40&sid=010be0dd-024b-47e9-a451-94b07cce4f40","uploadToServer":true}
+# environment
+INVOCATION_ID = c18c126751254ad890f19abf21dd4b3b
+# environment
+GDK_PIXBUF_MODULEDIR = /snap/code/59/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+# makefile (from 'Makefile', line 5)
+LIB = -lpthread
+# default
+.FEATURES := target-specific order-only second-expansion else-if shortest-stem undefine oneshell archives jobserver output-sync check-symlink load
+# environment
+LS_COLORS = 
+# environment
+XDG_SESSION_DESKTOP = ubuntu
+# environment
+SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
+# environment
+GIO_LAUNCHED_DESKTOP_FILE_PID = 2426
+# automatic
+%F = $(notdir $%)
+# environment
+DISPLAY = :0
+# makefile (from 'Makefile', line 7)
+SRCDIR = src
+# environment
+GTK_IM_MODULE = ibus
+# environment
+VSCODE_PIPE_LOGGING = true
+# environment
+SNAP_INSTANCE_KEY = 
+# environment
+PWD = /home/nkuhlman/Desktop/CISC310/Programs/os-scheduling
+# default
+.LOADED := 
+# environment
+SSH_AGENT_PID = 1539
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
+# environment
+GTK_MODULES = gail:atk-bridge
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/services/extensions/node/extensionHostProcess
+# environment
+HOME = /home/nkuhlman
+# environment
+LESSCLOSE = /usr/bin/lesspipe %s %s
+# environment
+VSCODE_CLI = 1
+# environment
+LOGNAME = nkuhlman
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+# environment
+SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void
+# environment
+SNAP_CONTEXT = 1zZubqd32fJf2ioQjENPQggVe4AEvyn7c24ewtcaULzVlRtK2Nda
+# environment
+SNAP_USER_COMMON = /home/nkuhlman/snap/code/common
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# environment
+GNOME_DESKTOP_SESSION_ID = this-is-deprecated
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+MAKELEVEL := 0
+# environment
+SNAP_REAL_HOME = /home/nkuhlman
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+QT_IM_MODULE = ibus
+# environment
+SNAP_USER_DATA = /home/nkuhlman/snap/code/59
+# environment
+SHLVL = 0
+# makefile (from 'Makefile', line 9)
+BINDIR = bin
+# environment
+GNOME_SHELL_SESSION_MODE = ubuntu
+# environment
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-129479fe-5845-4b9a-ab2d-d58793c3a611.sock
+# makefile (from 'Makefile', line 12)
+EXEC = $(addprefix $(BINDIR)/, osscheduler)
+# default
+MAKE_VERSION := 4.2.1
+# environment
+USER = nkuhlman
+# environment
+SNAP_REVISION = 59
+# makefile
+.DEFAULT_GOAL := all
+# makefile (from 'Makefile', line 4)
+INCLUDE = -I./include
+# environment
+XDG_CURRENT_DESKTOP = Unity
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# default
+MAKE_COMMAND := make
+# environment
+VSCODE_NODE_CACHED_DATA_DIR = /home/nkuhlman/.config/Code/CachedData/2b9aebd5354a3629c3aba0a5f5df49f43d6689f8
+# default
+.VARIABLES := 
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /run/user/1000/vscode-ca23d3ef-1.54.3-main.sock
+# environment
+BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
+# makefile
+MAKEFLAGS = pqrR
+# environment
+MFLAGS = -pqrR
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+BREAKPAD_DUMP_LOCATION = /home/nkuhlman/.config/Code/exthost Crash Reports
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# environment
+QT_ACCESSIBILITY = 1
+# 'override' directive
+.SHELLSTATUS := 0
+# default
+MAKEFILES := 
+ 
+# environment
+SNAP_COOKIE = 1zZubqd32fJf2ioQjENPQggVe4AEvyn7c24ewtcaULzVlRtK2Nda
+# automatic
+<F = $(notdir $<)
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# makefile (from 'Makefile', line 8)
+OBJDIR = obj
+# makefile (from 'Makefile', line 1)
+CXX = g++
+# environment
+SNAP_NAME = code
+# environment
+ELECTRON_NO_ATTACH_CONSOLE = 1
+# environment
+QT4_IM_MODULE = ibus
+# environment
+GJS_DEBUG_TOPICS = JS ERROR;JS LOG
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# environment
+SNAP_REEXEC = 
+# environment
+CHROME_DESKTOP = code-url-handler.desktop
+# environment
+WINDOWPATH = 2
+# default
+.INCLUDE_DIRS = /usr/include /usr/local/include /usr/include
+# environment
+GJS_DEBUG_OUTPUT = stderr
+# default
+.RECIPEPREFIX := 
+# environment
+LANG = en_US.UTF-8
+# environment
+VSCODE_PID = 2550
+# variable set hash-table stats:
+# Load=133/1024=13%, Rehash=0, Collisions=27/177=15%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 2053, inode 3675896): 12 files, no impossibilities.
+# src (device 2053, inode 3685331): 4 files, no impossibilities so far.
+
+# 16 files, no impossibilities in 2 directories.
+
+# Implicit Rules
+
+obj/%.o: src/%.cpp
+#  recipe to execute (from 'Makefile', line 25):
+	$(CXX) $(CXXFLAGS) -c -o $@ $< $(INCLUDE)
+
+# 1 implicit rules, 0 (0.0%) terminal.
+
+# Files
+
+all: bin/osscheduler
+#  Command line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
+
+# Not a target:
+obj/configreader.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+bin/osscheduler: obj/main.o obj/configreader.o obj/process.o
+#  Implicit rule search has not been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/6=0%
+#  recipe to execute (from 'Makefile', line 22):
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LIB)
+
+obj/main.o: src/main.cpp
+#  Implicit rule search has been done.
+#  Implicit/static pattern stem: 'main'
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := obj/main.o
+# automatic
+# % := 
+# automatic
+# * := main
+# automatic
+# + := src/main.cpp
+# automatic
+# | := 
+# automatic
+# < := src/main.cpp
+# automatic
+# ^ := src/main.cpp
+# automatic
+# ? := src/main.cpp
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=2/16=12%
+#  recipe to execute (from 'Makefile', line 25):
+	$(CXX) $(CXXFLAGS) -c -o $@ $< $(INCLUDE)
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+#  Last modified 2021-03-18 23:30:56.573510848
+#  File has been updated.
+#  Successfully updated.
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+obj/process.o:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+clean:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  recipe to execute (from 'Makefile', line 30):
+	rm -f $(OBJS) $(EXEC)
+
+# Not a target:
+src/main.cpp:
+#  Implicit rule search has been done.
+#  Last modified 2021-03-23 10:25:42.251888408
+#  File has been updated.
+#  Successfully updated.
+
+# files hash-table stats:
+# Load=10/1024=1%, Rehash=0, Collisions=0/29=0%
+# VPATH Search Paths
+
+# No 'vpath' search paths.
+
+# No general ('VPATH' variable) search path.
+
+# strcache buffers: 1 (0) / strings = 28 / storage = 249 B / avg = 8 B
+# current buf: size = 8162 B / used = 249 B / count = 28 / avg = 8 B
+
+# strcache performance: lookups = 41 / hit rate = 31%
+# hash-table stats:
+# Load=28/8192=0%, Rehash=0, Collisions=2/41=5%
+# Finished Make data base on Tue Mar 23 18:08:02 2021
+
+ 
