@@ -47,8 +47,8 @@ public:
     bool isBurstEnded();
     uint16_t getNumBursts();
     uint64_t getLastStateTime();
-    uint16_t getCurrentBurst();
-    uint32_t getBurstTime(int burst_idx);
+    uint16_t getCurrentBurst() const;
+    uint32_t getBurstTime(int burst_idx) const;
 
     void setBurstStartTime(uint64_t current_time);
     void setState(State new_state, uint64_t current_time);

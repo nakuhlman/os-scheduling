@@ -182,7 +182,7 @@ bool Process::isBurstEnded()
     return (burst_times[current_burst] <= 0);
 }
 
-uint16_t Process::getCurrentBurst()
+uint16_t Process::getCurrentBurst() const
 {
     return current_burst;
 }
@@ -192,15 +192,18 @@ void Process::nextBurst()
     current_burst += 1;
 }
 
-uint16_t Process::getNumBursts() {
+uint16_t Process::getNumBursts() 
+{
     return num_bursts;
 } 
 
-uint64_t Process::getLastStateTime() {
+uint64_t Process::getLastStateTime() 
+{
     return last_state_time;
 }
 
-uint32_t Process::getBurstTime(int burst_idx) {
+uint32_t Process::getBurstTime(int burst_idx) const 
+{
     return burst_times[burst_idx];
 }
 
@@ -210,8 +213,8 @@ uint32_t Process::getBurstTime(int burst_idx) {
 // SJF - comparator for sorting read queue based on shortest remaining CPU time
 bool SjfComparator::operator()(const Process *p1, const Process *p2)
 {
-    // your code here!
-    return false; // change this!
+    // Return true if p1's current burst is less than or equal to p2's current burst
+    return (p1->getBurstTime(p1->getCurrentBurst()) <= p2->getBurstTime(p2->getCurrentBurst()));
 }
 
 // PP - comparator for sorting read queue based on priority
