@@ -24,6 +24,8 @@ private:
     int32_t cpu_time;           // total time spent running on a CPU core
     int32_t remain_time;        // CPU time remaining until terminated
     uint64_t launch_time;       // actual time in ms (since epoch) that process was 'launched'
+    uint64_t last_state_time;   // time at last state
+    uint64_t last_updated_time; // time at last update
     // you are welcome to add other private data fields here if you so choose
 
 public:
@@ -42,11 +44,18 @@ public:
     double getCpuTime() const;
     double getRemainingTime() const;
 
+    bool isBurstEnded();
+    uint16_t getNumBursts();
+    uint64_t getLastStateTime();
+    uint16_t getCurrentBurst();
+    uint32_t getBurstTime(int burst_idx);
+
     void setBurstStartTime(uint64_t current_time);
     void setState(State new_state, uint64_t current_time);
     void setCpuCore(int8_t core_num);
     void interrupt();
     void interruptHandled();
+    void nextBurst();
 
     void updateProcess(uint64_t current_time);
     void updateBurstTime(int burst_idx, uint32_t new_time);

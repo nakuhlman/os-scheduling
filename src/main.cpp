@@ -11,18 +11,19 @@
 #include "process.h"
 
 // Shared data for all cores
-typedef struct SchedulerData {
+typedef struct SchedulerData
+{
     std::mutex mutex;
     std::condition_variable condition;
     ScheduleAlgorithm algorithm;
     uint32_t context_switch;
     uint32_t time_slice;
-    std::list<Process*> ready_queue;
+    std::list<Process *> ready_queue;
     bool all_terminated;
 } SchedulerData;
 
 void coreRunProcesses(uint8_t core_id, SchedulerData *data);
-int printProcessOutput(std::vector<Process*>& processes, std::mutex& mutex);
+int printProcessOutput(std::vector<Process *> &processes, std::mutex &mutex);
 void clearOutput(int num_lines);
 uint64_t currentTime();
 std::string processStateToString(Process::State state);
@@ -39,7 +40,7 @@ int main(int argc, char **argv)
     // Declare variables used throughout main
     int i;
     SchedulerData *shared_data;
-    std::vector<Process*> processes;
+    std::vector<Process *> processes;
 
     // Read configuration file for scheduling simulation
     SchedulerConfig *config = readConfigFile(argv[1]);
@@ -84,20 +85,36 @@ int main(int argc, char **argv)
 
         // Do the following:
         //   - Get current time
-        uint64_t current_time = currentTime() - start;
+        uint64_t current_time = currentTime();
         //   - *Check if any processes need to move from NotStarted to Ready (based on elapsed time), and if so put that process in the ready queue
         for (i = 0; i < processes.size(); i++)
         {
             std::lock_guard<std::mutex> lock(shared_data->mutex);
             Process *p = processes.at(i);
-            if(p->getState() == Process::State::NotStarted) {
-                if(p->getStartTime() <= current_time) {
+            if (p->getState() == Process::State::NotStarted)
+            {
+                if (p->getStartTime() <= current_time - start)
+                {
                     p->setState(Process::State::Ready, current_time);
                     shared_data->ready_queue.push_back(p);
                 }
             }
         }
         //   - *Check if any processes have finished their I/O burst, and if so put that process back in the ready queue
+        for (i = 0; i < processes.size(); i++)
+        {
+            Process *p = processes.at(i);
+            if(p->getState() == Process::State::IO) {
+                if(current_time - p->getLastStateTime() >= p->getBurstTime(p->getCurrentBurst())) {
+                    p->nextBurst();
+                    p->setState(Process::State::Ready, current_time);
+                    {
+                        std::lock_guard<std::mutex> lock(shared_data->mutex);
+                        shared_data->ready_queue.push_back(p);
+                    }
+                }
+            }
+        }
         //   - *Check if any running process need to be interrupted (RR time slice expires or newly ready process has higher priority)
         //   - *Sort the ready queue (if needed - based on scheduling algorithm)
         //   - Determine if all processes are in the terminated state
@@ -109,7 +126,6 @@ int main(int argc, char **argv)
         // sleep 50 ms
         usleep(50000);
     }
-
 
     // wait for threads to finish
     for (i = 0; i < num_cores; i++)
@@ -126,7 +142,6 @@ int main(int argc, char **argv)
     //  - Average turnaround time
     //  - Average waiting time
 
-
     // Clean up before quitting program
     processes.clear();
 
@@ -137,19 +152,66 @@ void coreRunProcesses(uint8_t core_id, SchedulerData *shared_data)
 {
     // Work to be done by each core idependent of the other cores
     // Repeat until all processes in terminated state:
-    //   - *Get process at front of ready queue
-    //   - Simulate the processes running until one of the following:
-    //     - CPU burst time has elapsed
-    //     - Interrupted (RR time slice has elapsed or process preempted by higher priority process)
-    //  - Place the process back in the appropriate queue
-    //     - I/O queue if CPU burst finished (and process not finished) -- no actual queue, simply set state to IO
-    //     - Terminated if CPU burst finished and no more bursts remain -- no actual queue, simply set state to Terminated
-    //     - *Ready queue if interrupted (be sure to modify the CPU burst time to now reflect the remaining time)
-    //  - Wait context switching time
+    while (!shared_data->all_terminated)
+    {
+        //   - *Get process at front of ready queue
+        Process *p = NULL;
+        {
+            std::lock_guard<std::mutex>(shared_data->mutex);
+            if (shared_data->ready_queue.size() > 0)
+            {
+                p = shared_data->ready_queue.front();
+                shared_data->ready_queue.pop_front();
+            }
+        }
+        //   - Simulate the processes running until one of the following:
+        //     - CPU burst time has elapsed
+        //     - Interrupted (RR time slice has elapsed or process preempted by higher priority process)
+        if (p != NULL)
+        {
+            p->setCpuCore(core_id);
+            p->setState(Process::State::Running, currentTime());
+            p->setBurstStartTime(currentTime());
+            bool running = true;
+            while (running)
+            {
+                p->updateProcess(currentTime());
+                // currently running on cpu
+                if (p->isInterrupted() || p->isBurstEnded())
+                {
+                    running = false;
+                }
+            }
+            //  - Place the process back in the appropriate queue
+            //     - I/O queue if CPU burst finished (and process not finished) -- no actual queue, simply set state to IO
+            //     - Terminated if CPU burst finished and no more bursts remain -- no actual queue, simply set state to Terminated
+            //     - *Ready queue if interrupted (be sure to modify the CPU burst time to now reflect the remaining time)
+
+            p->setCpuCore(-1);
+            if (p->getRemainingTime() <= 0.0 || p->getCurrentBurst() >= p->getNumBursts())
+            { // Terminated
+                p->setState(Process::State::Terminated, currentTime());
+            }
+            else if (p->isInterrupted())
+            { // Interrupt
+                std::lock_guard<std::mutex>(shared_data->mutex);
+                shared_data->ready_queue.push_back(p);
+            }
+            else
+            { // IO
+                p->nextBurst();
+                p->setState(Process::State::IO, currentTime());
+                p->setBurstStartTime(currentTime());
+            }
+            p->interruptHandled();
+            //  - Wait context switching time
+            usleep(shared_data->context_switch);
+        }
+    }
     //  - * = accesses shared data (ready queue), so be sure to use proper synchronization
 }
 
-int printProcessOutput(std::vector<Process*>& processes, std::mutex& mutex)
+int printProcessOutput(std::vector<Process *> &processes, std::mutex &mutex)
 {
     int i;
     int num_lines = 2;
@@ -169,8 +231,8 @@ int printProcessOutput(std::vector<Process*>& processes, std::mutex& mutex)
             double wait_time = processes[i]->getWaitTime();
             double cpu_time = processes[i]->getCpuTime();
             double remain_time = processes[i]->getRemainingTime();
-            printf("| %5u | %8u | %10s | %4s | %9.1lf | %9.1lf | %8.1lf | %11.1lf |\n", 
-                   pid, priority, process_state.c_str(), cpu_core.c_str(), turn_time, 
+            printf("| %5u | %8u | %10s | %4s | %9.1lf | %9.1lf | %8.1lf | %11.1lf |\n",
+                   pid, priority, process_state.c_str(), cpu_core.c_str(), turn_time,
                    wait_time, cpu_time, remain_time);
             num_lines++;
         }
@@ -192,7 +254,8 @@ void clearOutput(int num_lines)
 uint64_t currentTime()
 {
     uint64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(
-                  std::chrono::system_clock::now().time_since_epoch()).count();
+                      std::chrono::system_clock::now().time_since_epoch())
+                      .count();
     return ms;
 }
 
@@ -201,24 +264,24 @@ std::string processStateToString(Process::State state)
     std::string str;
     switch (state)
     {
-        case Process::State::NotStarted:
-            str = "not started";
-            break;
-        case Process::State::Ready:
-            str = "ready";
-            break;
-        case Process::State::Running:
-            str = "running";
-            break;
-        case Process::State::IO:
-            str = "i/o";
-            break;
-        case Process::State::Terminated:
-            str = "terminated";
-            break;
-        default:
-            str = "unknown";
-            break;
+    case Process::State::NotStarted:
+        str = "not started";
+        break;
+    case Process::State::Ready:
+        str = "ready";
+        break;
+    case Process::State::Running:
+        str = "running";
+        break;
+    case Process::State::IO:
+        str = "i/o";
+        break;
+    case Process::State::Terminated:
+        str = "terminated";
+        break;
+    default:
+        str = "unknown";
+        break;
     }
     return str;
 }
