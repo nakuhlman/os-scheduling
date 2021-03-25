@@ -145,6 +145,9 @@ bool SjfComparator::operator ()(const Process *p1, const Process *p2)
 // PP - comparator for sorting read queue based on priority
 bool PpComparator::operator ()(const Process *p1, const Process *p2)
 {
-    // your code here!
-    return false; // change this!
+    if(p1->getPriority() > p2->getPriority()) {
+        return true;
+    } else {
+        return false;
+    }
 }

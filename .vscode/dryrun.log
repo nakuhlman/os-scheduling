@@ -1,9 +1,8 @@
 make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/nkuhlman/Desktop/CISC310/Programs/os-scheduling'
- 
+make: Entering directory '/home/nkuhlman/Desktop/CISC310/Programs/os-scheduling/os-scheduling'
 g++ -std=c++11 -D_VARIADIC_MAX=10 -c -o obj/main.o src/main.cpp -I./include
 g++ -std=c++11 -D_VARIADIC_MAX=10 -c -o obj/configreader.o src/configreader.cpp -I./include
 g++ -std=c++11 -D_VARIADIC_MAX=10 -c -o obj/process.o src/process.cpp -I./include
 g++ -std=c++11 -D_VARIADIC_MAX=10 -o bin/osscheduler obj/main.o obj/configreader.o obj/process.o -lpthread
-make: Leaving directory '/home/nkuhlman/Desktop/CISC310/Programs/os-scheduling'
+make: Leaving directory '/home/nkuhlman/Desktop/CISC310/Programs/os-scheduling/os-scheduling'
  

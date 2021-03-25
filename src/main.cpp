@@ -92,19 +92,62 @@ int main(int argc, char **argv)
                 shared_data->mutex.lock();
                 // if so put that process in the ready queue
                 shared_data->ready_queue.push_back(processes[i]);
-            } else if () {
-                //   - *Check if any processes have finished their I/O burst, and if so put that process back in the ready queue
+                // set the process state to Ready
+                processes[i]->setState(Process::State::Ready, curTime);
+            }
+            //   - *Check if any processes have finished their I/O burst, and if so put that process back in the ready queue
+            if (processes[i]->getState() == Process::State::IO && processes[i]->getRemainingTime() == 0) {
+                shared_data->ready_queue.push_back(processes[i]);
+                processes[i]->setState(Process::State::Ready, curTime);
+            }
 
-            } else if () {
-                //   - *Check if any running process need to be interrupted (RR time slice expires or newly ready process has higher priority)
+            //   - *Check if any running process need to be interrupted (RR time slice expires) or newly ready process has higher priority)
+            if(shared_data->algorithm == RR) {
+                if(processes[i]->getCpuTime() >= shared_data->time_slice) {
+                    // accessing shared data, lock mutex
+                    shared_data->mutex.lock();
+                    // signal an interrupt
+                    processes[i]->interrupt();
+                }
+            } else {
+                // Scan the ready queue
+                for(const auto& Process : shared_data->ready_queue) {
+                    // If a ready process has a higher priority then the current process..
+                    if(Process->getPriority() > processes[i]->getPriority()) {
+                        // accessing shared data, lock mutex
+                        shared_data->mutex.lock();
+                        // signal an interrupt
+                        processes[i]->interrupt();
+                    }
+                }
 
             }
         }
         
         
         //   - *Sort the ready queue (if needed - based on scheduling algorithm)
+        switch(shared_data->algorithm) {
+            // accessing shared data, lock mutex
+            shared_data->mutex.lock();
+
+            case SJF:
+            // call SJFSort method
+            
+            break;
+
+            case PP:
+            // call PPSort method
+
+            break;
+
+            default:
+            break;
+        }
+
+            
+
         //   - Determine if all processes are in the terminated state
-        //   - * = accesses shared data (ready queue), so be sure to use proper synchronization
+        //   NOTE: * = accesses shared data (ready queue), so be sure to use proper synchronization
 
         // output process status table
         num_lines = printProcessOutput(processes, shared_data->mutex);

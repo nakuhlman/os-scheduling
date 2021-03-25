@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue Mar 23 18:08:02 2021
+# Make data base, printed on Wed Mar 24 21:30:51 2021
 
 # Variables
 
@@ -41,7 +41,7 @@ GDMSESSION = ubuntu
 # environment
 XMODIFIERS = @im=ibus
 # makefile
-CURDIR := /home/nkuhlman/Desktop/CISC310/Programs/os-scheduling
+CURDIR := /home/nkuhlman/Desktop/CISC310/Programs/os-scheduling/os-scheduling
 # makefile
 SHELL = /bin/sh
 # environment
@@ -49,7 +49,7 @@ SNAP_DATA = /var/snap/code/59
 # environment
 VSCODE_NLS_CONFIG = {"locale":"en-us","availableLanguages":{},"_languagePackSupport":true}
 # environment
-JOURNAL_STREAM = 8:36353
+JOURNAL_STREAM = 8:77351
 # environment
 XDG_CONFIG_DIRS = /etc/xdg/xdg-ubuntu:/etc/xdg
 # environment
@@ -77,7 +77,7 @@ _ = /snap/code/59/usr/share/code/code
 # makefile (from 'Makefile', line 11)
 OBJS = $(addprefix $(OBJDIR)/, main.o configreader.o process.o)
 # environment
-MANAGERPID = 1320
+MANAGERPID = 12572
 # environment
 CLUTTER_IM_MODULE = ibus
 # environment
@@ -93,7 +93,7 @@ PATH = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-SESSION_MANAGER = local/CISC310-VM:@/tmp/.ICE-unix/1693,unix/CISC310-VM:/tmp/.ICE-unix/1693
+SESSION_MANAGER = local/CISC310-VM:@/tmp/.ICE-unix/12931,unix/CISC310-VM:/tmp/.ICE-unix/12931
 # environment
 XDG_RUNTIME_DIR = /run/user/1000
 # environment
@@ -111,7 +111,7 @@ DISABLE_WAYLAND = 1
 # environment
 VSCODE_CRASH_REPORTER_START_OPTIONS = {"companyName":"Microsoft","productName":"VSCode","submitURL":"appcenter://code?aid=fba07a4d-84bd-4fc8-a125-9640fc8ce171&uid=010be0dd-024b-47e9-a451-94b07cce4f40&iid=010be0dd-024b-47e9-a451-94b07cce4f40&sid=010be0dd-024b-47e9-a451-94b07cce4f40","uploadToServer":true}
 # environment
-INVOCATION_ID = c18c126751254ad890f19abf21dd4b3b
+INVOCATION_ID = 4de649be28994a118aa089b5fc1e0cf5
 # environment
 GDK_PIXBUF_MODULEDIR = /snap/code/59/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
 # makefile (from 'Makefile', line 5)
@@ -125,7 +125,7 @@ XDG_SESSION_DESKTOP = ubuntu
 # environment
 SSH_AUTH_SOCK = /run/user/1000/keyring/ssh
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 2426
+GIO_LAUNCHED_DESKTOP_FILE_PID = 14495
 # automatic
 %F = $(notdir $%)
 # environment
@@ -139,11 +139,11 @@ VSCODE_PIPE_LOGGING = true
 # environment
 SNAP_INSTANCE_KEY = 
 # environment
-PWD = /home/nkuhlman/Desktop/CISC310/Programs/os-scheduling
+PWD = /home/nkuhlman/Desktop/CISC310/Programs/os-scheduling/os-scheduling
 # default
 .LOADED := 
 # environment
-SSH_AGENT_PID = 1539
+SSH_AGENT_PID = 12795
 # environment
 ORIGINAL_XDG_CURRENT_DESKTOP = ubuntu:GNOME
 # environment
@@ -191,7 +191,7 @@ BINDIR = bin
 # environment
 GNOME_SHELL_SESSION_MODE = ubuntu
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-129479fe-5845-4b9a-ab2d-d58793c3a611.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-ab42a6a6-76bd-45f7-a3e1-2928578c14ab.sock
 # makefile (from 'Makefile', line 12)
 EXEC = $(addprefix $(BINDIR)/, osscheduler)
 # default
@@ -238,7 +238,6 @@ QT_ACCESSIBILITY = 1
 .SHELLSTATUS := 0
 # default
 MAKEFILES := 
- 
 # environment
 SNAP_COOKIE = 1zZubqd32fJf2ioQjENPQggVe4AEvyn7c24ewtcaULzVlRtK2Nda
 # automatic
@@ -276,9 +275,10 @@ GJS_DEBUG_OUTPUT = stderr
 # environment
 LANG = en_US.UTF-8
 # environment
-VSCODE_PID = 2550
+VSCODE_PID = 14539
 # variable set hash-table stats:
 # Load=133/1024=13%, Rehash=0, Collisions=27/177=15%
+ 
 
 # Pattern-specific Variable Values
 
@@ -286,8 +286,8 @@ VSCODE_PID = 2550
 
 # Directories
 
-# . (device 2053, inode 3675896): 12 files, no impossibilities.
-# src (device 2053, inode 3685331): 4 files, no impossibilities so far.
+# . (device 2053, inode 3670942): 12 files, no impossibilities.
+# src (device 2053, inode 3684690): 4 files, no impossibilities so far.
 
 # 16 files, no impossibilities in 2 directories.
 
@@ -356,7 +356,7 @@ obj/main.o: src/main.cpp
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2021-03-18 23:30:56.573510848
+#  Last modified 2021-03-24 21:30:46.677140236
 #  File has been updated.
 #  Successfully updated.
 
@@ -382,7 +382,7 @@ clean:
 # Not a target:
 src/main.cpp:
 #  Implicit rule search has been done.
-#  Last modified 2021-03-23 10:25:42.251888408
+#  Last modified 2021-03-24 21:30:46.677140236
 #  File has been updated.
 #  Successfully updated.
 
@@ -400,6 +400,6 @@ src/main.cpp:
 # strcache performance: lookups = 41 / hit rate = 31%
 # hash-table stats:
 # Load=28/8192=0%, Rehash=0, Collisions=2/41=5%
-# Finished Make data base on Tue Mar 23 18:08:02 2021
+# Finished Make data base on Wed Mar 24 21:30:51 2021
 
  
