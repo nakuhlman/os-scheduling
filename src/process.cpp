@@ -134,7 +134,6 @@ void Process::updateProcess(uint64_t current_time)
 {
     // set turn time
     turn_time = current_time - launch_time;
-    //printf("TT = %ld - %ld = %ld\n",current_time, launch_time, current_time - launch_time);
 
     // update burst and cpu times
     if(state == State::Running){
@@ -143,7 +142,7 @@ void Process::updateProcess(uint64_t current_time)
         burst_times[current_burst] -= delta_time;
     }
 
-    if(burst_times[current_burst <= 0]) {
+    if(burst_times[current_burst] <= 0) {
         burst_times[current_burst] = 0;
     }
 
@@ -155,21 +154,6 @@ void Process::updateProcess(uint64_t current_time)
     }
 
     last_updated_time = current_time;
-
-    // turn_time = current_time - launch_time;
-    // if (state == State::Running)
-    // {
-    //     if (current_time - burst_start_time >= burst_times[current_burst])
-    //     {
-    //         // Finished Burst
-    //         cpu_time += burst_times[current_burst];
-    //         burst_times[current_burst] = 0;
-    //     }
-    // }
-
-    // for(uint8_t i = 0; i < num_bursts; i += 2) {
-    //     remain_time += burst_times[i];
-    // }
 }
 
 void Process::updateBurstTime(int burst_idx, uint32_t new_time)

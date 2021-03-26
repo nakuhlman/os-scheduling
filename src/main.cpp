@@ -182,6 +182,7 @@ void coreRunProcesses(uint8_t core_id, SchedulerData *shared_data)
                     running = false;
                 }
             }
+            p->updateProcess(currentTime());
             //  - Place the process back in the appropriate queue
             //     - I/O queue if CPU burst finished (and process not finished) -- no actual queue, simply set state to IO
             //     - Terminated if CPU burst finished and no more bursts remain -- no actual queue, simply set state to Terminated
