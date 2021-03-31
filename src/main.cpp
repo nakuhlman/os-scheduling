@@ -26,6 +26,8 @@ int printProcessOutput(std::vector<Process*>& processes, std::mutex& mutex);
 void clearOutput(int num_lines);
 uint64_t currentTime();
 std::string processStateToString(Process::State state);
+void SJFSort(std::list<Process*> ready_queue);
+void PPSort(std::list<Process*> ready_queue);
 
 int main(int argc, char **argv)
 {
@@ -77,6 +79,8 @@ int main(int argc, char **argv)
 
     // Main thread work goes here
     int num_lines = 0;
+    
+    //   - Determine if all processes are in the terminated state
     while (!(shared_data->all_terminated))
     {
         // Clear output from previous iteration
@@ -124,7 +128,6 @@ int main(int argc, char **argv)
             }
         }
         
-        
         //   - *Sort the ready queue (if needed - based on scheduling algorithm)
         switch(shared_data->algorithm) {
             // accessing shared data, lock mutex
@@ -132,21 +135,20 @@ int main(int argc, char **argv)
 
             case SJF:
             // call SJFSort method
-            
+            SJFSort(shared_data->ready_queue);
             break;
 
             case PP:
             // call PPSort method
-
+            PPSort(shared_data->ready_queue);
             break;
 
             default:
             break;
         }
 
-            
 
-        //   - Determine if all processes are in the terminated state
+        
         //   NOTE: * = accesses shared data (ready queue), so be sure to use proper synchronization
 
         // output process status table
@@ -268,3 +270,40 @@ std::string processStateToString(Process::State state)
     }
     return str;
 }
+
+// Sorts the ready queue using Shortest Job First, SjfComparator
+void SJFSort(std::list<Process*> ready_queue) {
+    for(int i = 0; i < ready_queue.size(); i++) {
+        int flag = 0;
+        for(int j = 0; j < size - i - 1; j++) {
+            if(SjfComparator(ready_queue[j], ready_queue[j + 1]) == true) {
+                Process temp = ready_queue[j];
+                ready_queue[j] = ready_queue[j + 1];
+                ready_queue[j + 1] = temp;
+                flag = 1;
+            }
+        }
+        if(!flag) {
+            break;
+        }
+    }
+}
+
+// Sorts the ready queue using PPSort, PPComparator
+void PPSort(std::list<Process*> ready_queue) {
+    for(int i = 0; i < ready_queue.size(); i++) {
+        int flag = 0;
+        for(int j = 0; j < size - i - 1; j++) {
+            if(PpComparator(ready_queue[j], ready_queue[j + 1]) == true) {
+                Process temp = ready_queue[j];
+                ready_queue[j] = ready_queue[j + 1];
+                ready_queue[j + 1] = temp;
+                flag = 1;
+            }
+        }
+        if(!flag) {
+            break;
+        }
+    }
+}
+
