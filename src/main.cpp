@@ -20,6 +20,12 @@ typedef struct SchedulerData
     uint32_t time_slice;
     std::list<Process *> ready_queue;
     bool all_terminated;
+    int num_terminated;
+    double throughput_first_half;
+    int first_half_count;
+    double throughput_second_half;
+    int second_half_count;
+    int num_processes;
 } SchedulerData;
 
 void coreRunProcesses(uint8_t core_id, SchedulerData *data);
@@ -54,6 +60,13 @@ int main(int argc, char **argv)
     shared_data->context_switch = config->context_switch;
     shared_data->time_slice = config->time_slice;
     shared_data->all_terminated = false;
+    //  custom
+    shared_data->num_terminated = 0;
+    shared_data->throughput_first_half = 0.0;
+    shared_data->first_half_count = 0;
+    shared_data->throughput_second_half = 0.0;
+    shared_data->second_half_count = 0;
+
 
     // Create processes
     uint64_t start = currentTime();
@@ -68,6 +81,8 @@ int main(int argc, char **argv)
         }
     }
 
+    shared_data->num_processes = processes.size();
+
     // Free configuration data from memory
     deleteConfig(config);
 
@@ -80,10 +95,14 @@ int main(int argc, char **argv)
 
     // Main thread work goes here
     int num_lines = 0;
-    
     //   - Determine if all processes are in the terminated state
     while (!(shared_data->all_terminated))
     {
+        if(shared_data->num_terminated >= processes.size()) {
+            std::lock_guard<std::mutex>(shared_data->mutex);
+            shared_data->all_terminated = true;
+        }
+
         // Clear output from previous iteration
         clearOutput(num_lines);
 
@@ -171,13 +190,41 @@ int main(int argc, char **argv)
     }
 
     // print final statistics
-    //  - CPU utilization
+    //  - CPU utilization (done)
     //  - Throughput
     //     - Average for first 50% of processes finished
     //     - Average for second 50% of processes finished
     //     - Overall average
-    //  - Average turnaround time
-    //  - Average waiting time
+    //  - Average turnaround time (done)
+    //  - Average waiting time (done)
+
+    double total_idle_probability = 1.0;
+    double average_turnaround_time = 0.0;
+    double average_waiting_time = 0.0;
+
+    int num_processes = processes.size();
+    for(int i = 0; i < num_processes; i++) {
+        Process* p = processes.at(i);
+        total_idle_probability *= (1.0 - (p->getCpuTime()/p->getTurnaroundTime()));
+        average_turnaround_time += p->getTurnaroundTime();
+        average_waiting_time += p->getWaitTime();
+    }
+
+    double cpu_util = (1.0 - total_idle_probability) * 100.0;
+    double throughput_first_half = shared_data->throughput_first_half / shared_data->first_half_count;
+    double throughput_second_half = shared_data->throughput_second_half / shared_data->second_half_count;
+    double throughput_overall_average = (shared_data->throughput_first_half + shared_data->throughput_second_half) / (shared_data->first_half_count + shared_data->second_half_count);
+    average_turnaround_time /= (double)num_processes;
+    average_waiting_time /= (double)num_processes;
+
+    printf("CPU Utilization: %.1f%%\n", cpu_util);
+    printf("Throughput:\n");
+    printf(" - Average for first 50%% of processes: %.2f\n", throughput_first_half);
+    printf(" - Average for second 50%% of processes: %.2f\n", throughput_second_half);
+    printf(" - Overall Average: %.2f\n", throughput_overall_average);
+
+    printf("Average Turnaround Time: %f\n", average_turnaround_time);
+    printf("Average Waiting Time: %f\n", average_waiting_time);
 
     // Clean up before quitting program
     processes.clear();
@@ -229,6 +276,16 @@ void coreRunProcesses(uint8_t core_id, SchedulerData *shared_data)
             if (p->getRemainingTime() <= 0.0 || p->getCurrentBurst() >= p->getNumBursts())
             { // Terminated
                 p->setState(Process::State::Terminated, currentTime());
+                std::lock_guard<std::mutex>(shared_data->mutex);
+                shared_data->num_terminated += 1;
+                // when a process finishes, add its turnaround time to the first half or second half turnaround time counters
+                if(((double)shared_data->num_terminated / shared_data->num_processes) <= 0.5) {
+                    shared_data->throughput_first_half += p->getTurnaroundTime();
+                    shared_data->first_half_count += 1;
+                } else {
+                    shared_data->throughput_second_half += p->getTurnaroundTime();
+                    shared_data->second_half_count += 1;
+                }
             }
             else if (p->isInterrupted())
             { // Interrupt
