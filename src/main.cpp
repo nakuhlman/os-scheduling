@@ -116,12 +116,12 @@ int main(int argc, char **argv)
                 // accessing shared data, lock mutex
                 std::lock_guard<std::mutex>(shared_data->mutex);
                 // if so put that process in the ready queue
-                shared_data->ready_queue.push_back(processes[i]);
+                shared_data->ready_queue.push_back(p);
                 // set the process state to Ready
-                processes[i]->setState(Process::State::Ready, curTime);
+                p->setState(Process::State::Ready, curTime);
             }
             //   - *Check if any processes have finished their I/O burst, and if so put that process back in the ready queue
-            if (processes[i]->getState() == Process::State::IO && curTime - p->getLastStateTime() >= p->getBurstTime(p->getCurrentBurst())) {
+            if (p->getState() == Process::State::IO && curTime - p->getLastStateTime() >= p->getBurstTime(p->getCurrentBurst())) {
                 p->nextBurst();
                 p->setState(Process::State::Ready, curTime);
                 {
@@ -131,25 +131,25 @@ int main(int argc, char **argv)
             }
 
             //   - *Check if any running process need to be interrupted (RR time slice expires) or newly ready process has higher priority)
-            if(shared_data->algorithm == RR) {
-                if(processes[i]->getCpuTime() >= shared_data->time_slice) {
-                    // accessing shared data, lock mutex
-                    std::lock_guard<std::mutex>(shared_data->mutex);
-                    // signal an interrupt
-                    processes[i]->interrupt();
-                }
-            } else {
-                // Scan the ready queue
-                for(const auto& Process : shared_data->ready_queue) {
-                    // If a ready process has a higher priority then the current process..
-                    if(Process->getPriority() > processes[i]->getPriority()) {
-                        // accessing shared data, lock mutex
+            switch(shared_data->algorithm) {
+                case RR:
+                    // Round Robin Interrupt
+                    if(p->getBurstTime(p->getCurrentBurst()) >= shared_data->time_slice) {
                         std::lock_guard<std::mutex>(shared_data->mutex);
-                        // signal an interrupt
-                        processes[i]->interrupt();
+                        p->interrupt();
                     }
-                }
-
+                    break;
+                case PP:
+                    // Priority Scheduling
+                    std::lock_guard<std::mutex>(shared_data->mutex);
+                    for(const auto& Process : shared_data->ready_queue) {
+                        // If a ready process has a higher priority then the current process..
+                        if(Process->getPriority() > p->getPriority()) {
+                            // signal an interrupt
+                            p->interrupt();
+                        }
+                    }
+                    break;
             }
         }
         
@@ -289,6 +289,8 @@ void coreRunProcesses(uint8_t core_id, SchedulerData *shared_data)
             }
             else if (p->isInterrupted())
             { // Interrupt
+                p->interruptHandled();
+                p->setState(Process::State::Ready, currentTime());
                 std::lock_guard<std::mutex>(shared_data->mutex);
                 shared_data->ready_queue.push_back(p);
             }
@@ -383,39 +385,11 @@ std::string processStateToString(Process::State state)
 
 // Sorts the ready queue using Shortest Job First, SjfComparator
 void SJFSort(std::list<Process*> ready_queue) {
-    // for(int i = 0; i < ready_queue.size(); i++) {
-    //     int flag = 0;
-    //     for(int j = 0; j < ready_queue.size() - i - 1; j++) {
-    //         if(SjfComparator(ready_queue[j], ready_queue[j + 1]) == true) {
-    //             Process temp = ready_queue.at(j);
-    //             ready_queue[j] = ready_queue[j + 1];
-    //             ready_queue[j + 1] = temp;
-    //             flag = 1;
-    //         }
-    //     }
-    //     if(!flag) {
-    //         break;
-    //     }
-    // }
    ready_queue.sort(SjfComparator()); // TODO: Needs Testing
 }
 
 // Sorts the ready queue using PPSort, PPComparator
 void PPSort(std::list<Process*> ready_queue) {
-    // for(int i = 0; i < ready_queue.size(); i++) {
-    //     int flag = 0;
-    //     for(int j = 0; j < ready_queue.size() - i - 1; j++) {
-    //         if(PpComparator(ready_queue[j], ready_queue[j + 1]) == true) {
-    //             Process temp = ready_queue[j];
-    //             ready_queue[j] = ready_queue[j + 1];
-    //             ready_queue[j + 1] = temp;
-    //             flag = 1;
-    //         }
-    //     }
-    //     if(!flag) {
-    //         break;
-    //     }
-    // }
    ready_queue.sort(PpComparator()); // TODO: Needs Testing
 }
 
