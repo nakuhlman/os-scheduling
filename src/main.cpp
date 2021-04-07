@@ -219,12 +219,12 @@ int main(int argc, char **argv)
 
     printf("CPU Utilization: %.1f%%\n", cpu_util);
     printf("Throughput:\n");
-    printf(" - Average for first 50%% of processes: %.2f\n", throughput_first_half);
-    printf(" - Average for second 50%% of processes: %.2f\n", throughput_second_half);
-    printf(" - Overall Average: %.2f\n", throughput_overall_average);
+    printf(" - Average for first 50%% of processes: %.3f\n", throughput_first_half);
+    printf(" - Average for second 50%% of processes: %.3f\n", throughput_second_half);
+    printf(" - Overall Average: %.3f\n", throughput_overall_average);
 
-    printf("Average Turnaround Time: %f\n", average_turnaround_time);
-    printf("Average Waiting Time: %f\n", average_waiting_time);
+    printf("Average Turnaround Time: %.3f\n", average_turnaround_time);
+    printf("Average Waiting Time: %.3f\n", average_waiting_time);
 
     // Clean up before quitting program
     processes.clear();
@@ -261,7 +261,7 @@ void coreRunProcesses(uint8_t core_id, SchedulerData *shared_data)
             {
                 p->updateProcess(currentTime());
                 // currently running on cpu
-                if (p->isInterrupted() || p->isBurstEnded())
+                if (p->isInterrupted() || p->getBurstTime(p->getCurrentBurst()) <= 0)
                 {
                     running = false;
                 }
@@ -385,11 +385,11 @@ std::string processStateToString(Process::State state)
 
 // Sorts the ready queue using Shortest Job First, SjfComparator
 void SJFSort(std::list<Process*> ready_queue) {
-   ready_queue.sort(SjfComparator()); // TODO: Needs Testing
+   ready_queue.sort(SjfComparator());
 }
 
 // Sorts the ready queue using PPSort, PPComparator
 void PPSort(std::list<Process*> ready_queue) {
-   ready_queue.sort(PpComparator()); // TODO: Needs Testing
+   ready_queue.sort(PpComparator());
 }
 

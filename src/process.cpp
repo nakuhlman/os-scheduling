@@ -159,11 +159,6 @@ void Process::updateBurstTime(int burst_idx, uint32_t new_time)
     burst_times[burst_idx] = new_time;
 }
 
-bool Process::isBurstEnded()
-{
-    return (burst_times[current_burst] <= 0);
-}
-
 uint16_t Process::getCurrentBurst() const
 {
     return current_burst;
